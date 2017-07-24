@@ -28,7 +28,7 @@ import io.netty.util.concurrent.Promise;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.ThrowableUtil;
 
-import java.util.Deque;
+import java.util.Queue;
 
 import static io.netty.util.internal.ObjectUtil.*;
 
@@ -44,7 +44,7 @@ public class SimpleChannelPool implements ChannelPool {
     private static final IllegalStateException FULL_EXCEPTION = ThrowableUtil.unknownStackTrace(
             new IllegalStateException("ChannelPool full"), SimpleChannelPool.class, "releaseAndOffer(...)");
 
-    private final Deque<Channel> deque = PlatformDependent.newConcurrentDeque();
+    private final Queue<Channel> deque = PlatformDependent.newConcurrentDeque();
     private final ChannelPoolHandler handler;
     private final ChannelHealthChecker healthCheck;
     private final Bootstrap bootstrap;
@@ -355,7 +355,7 @@ public class SimpleChannelPool implements ChannelPool {
      * implementations of these methods needs to be thread-safe!
      */
     protected Channel pollChannel() {
-        return deque.pollLast();
+        return deque.poll();
     }
 
     /**
